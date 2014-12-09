@@ -27,8 +27,8 @@
     "url": "https://github.com/cezary/react-favicon/issues"
   },
   "homepage": "https://github.com/cezary/react-favicon",
-  "dependencies": {
-    "react": "^0.12.1"
+  "peerDependencies": {
+    "react": ">=0.12.0"
   },
   "devDependencies": {
     "jsx-loader": "^0.12.2",
