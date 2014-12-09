@@ -1,0 +1,8 @@
+#!/bin/sh
+webpack --devtool source-map
+
+node_modules/.bin/uglifyjs dist/react-favicon.js \
+  --output dist/react-favicon.js \
+  --source-map dist/react-favicon.js \
+  --source-map-url react-favicon.js \
+  --compress warnings=false

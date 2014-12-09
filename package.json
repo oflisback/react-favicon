@@ -1,0 +1,40 @@
+{
+  "name": "react-favicon",
+  "version": "0.0.1",
+  "description": "Favicon for react",
+  "main": "lib/react-favicon.js",
+  "scripts": {
+    "start": "script/build"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cezary/react-favicon.git"
+  },
+  "keywords": [
+    "favicon",
+    "jsx",
+    "react",
+    "react-component"
+  ],
+  "author": "Cezary Wojtkowski <cezary@gmail.com> (http://github.com/cezary)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cezary/react-favicon/issues"
+  },
+  "homepage": "https://github.com/cezary/react-favicon",
+  "dependencies": {
+    "react": "^0.12.1"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "reactify": "^0.17.0",
+    "uglify-js": "^2.4.15",
+    "webpack": "^1.4.13",
+    "webpack-dev-server": "^1.6.6"
+  }
+}
