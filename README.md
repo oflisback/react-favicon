@@ -13,6 +13,7 @@ npm install --save react-favicon
 * Update the favicon with a url or base64 encoded image
 * Animate through a list of urls
 * Toggle animation
+* Alert bubbles
 
 ## Usage
 ```javascript
@@ -20,4 +21,4 @@ npm install --save react-favicon
 ```
 
 ## Todo
-* Alert bubbles
+* ~~Alert bubbles~~
