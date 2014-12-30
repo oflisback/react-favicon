@@ -5,8 +5,12 @@ Control the favicon from a React app
 ## Installation
 
 ```
-npm install --save react-favicon
+npm install react-favicon --save
 ```
+
+## Demo
+
+http://cezary.github.io/react-favicon
 
 ## Features
 
