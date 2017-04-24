@@ -47,107 +47,102 @@ function drawIcon(src, num, cb) {
   img.src = src;
 }
 
-var Favicon = React.createClass({
-  displayName: 'Favicon',
+class Favicon extends React.Component {
+  constructor(...args) {
+    var _temp;
 
-  getDefaultProps: function getDefaultProps() {
-    return {
-      alertCount: null,
-      animated: true,
-      animationDelay: 500
-    };
-  },
-
-  getInitialState: function getInitialState() {
-    return {
+    return _temp = super(...args), this.state = {
       animationIndex: 0,
       animationLoop: null,
       animationRunning: false
-    };
-  },
+    }, _temp;
+  }
 
-  statics: {
-    mountedInstances: [],
+  static getActiveInstance() {
+    return Favicon.mountedInstances[Favicon.mountedInstances.length - 1];
+  }
 
-    getActiveInstance: function getActiveInstance() {
-      return Favicon.mountedInstances[Favicon.mountedInstances.length - 1];
-    },
+  static draw() {
+    if (typeof document === 'undefined') return;
 
-    draw: function draw() {
-      if (typeof document === 'undefined') {
-        return;
-      }if (typeof linkEl === 'undefined') {
-        var head = document.getElementsByTagName('head')[0];
-        linkEl = document.createElement('link');
-        linkEl.type = 'image/x-icon';
-        linkEl.rel = 'icon';
+    if (typeof linkEl === 'undefined') {
+      var head = document.getElementsByTagName('head')[0];
+      linkEl = document.createElement('link');
+      linkEl.type = 'image/x-icon';
+      linkEl.rel = 'icon';
 
-        // remove existing favicons
-        var links = head.getElementsByTagName('link');
-        for (var i = links.length; --i >= 0; /\bicon\b/i.test(links[i].getAttribute('rel')) && head.removeChild(links[i])) {}
+      // remove existing favicons
+      var links = head.getElementsByTagName("link");
+      for (var i = links.length; --i >= 0; /\bicon\b/i.test(links[i].getAttribute("rel")) && head.removeChild(links[i])) {}
 
-        head.appendChild(linkEl);
-      }
-
-      var activeInstance = Favicon.getActiveInstance();
-      var currentUrl;
-
-      if (activeInstance.props.url instanceof Array) {
-        currentUrl = activeInstance.props.url[activeInstance.state.animationIndex];
-      } else {
-        currentUrl = activeInstance.props.url;
-      }
-
-      if (activeInstance.props.alertCount) {
-        drawIcon(currentUrl, activeInstance.props.alertCount, function (err, url) {
-          linkEl.href = url;
-        });
-      } else {
-        linkEl.href = currentUrl;
-      }
-    },
-
-    update: function update() {
-      if (typeof document === 'undefined') {
-        return;
-      }var activeInstance = Favicon.getActiveInstance();
-      var isAnimated = activeInstance.props.url instanceof Array && activeInstance.props.animated;
-
-      // clear any running animations
-      var intervalId = null;
-      clearInterval(activeInstance.state.animationLoop);
-
-      if (isAnimated) {
-        var animateFavicon = function animateFavicon() {
-          var nextAnimationIndex = (activeInstance.state.animationIndex + 1) % activeInstance.props.url.length;
-          Favicon.draw();
-          activeInstance.setState({ animationIndex: nextAnimationIndex });
-        };
-        intervalId = setInterval(animateFavicon, activeInstance.props.animationDelay);
-        animateFavicon();
-      } else {
-        Favicon.draw();
-      }
-
-      activeInstance.setState({ animationLoop: intervalId });
+      head.appendChild(linkEl);
     }
-  },
 
-  componentWillMount: function componentWillMount() {
+    var activeInstance = Favicon.getActiveInstance();
+    var currentUrl;
+
+    if (activeInstance.props.url instanceof Array) {
+      currentUrl = activeInstance.props.url[activeInstance.state.animationIndex];
+    } else {
+      currentUrl = activeInstance.props.url;
+    }
+
+    if (activeInstance.props.alertCount) {
+      drawIcon(currentUrl, activeInstance.props.alertCount, function (err, url) {
+        linkEl.href = url;
+      });
+    } else {
+      linkEl.href = currentUrl;
+    }
+  }
+
+  static update() {
+    if (typeof document === 'undefined') return;
+
+    var activeInstance = Favicon.getActiveInstance();
+    var isAnimated = activeInstance.props.url instanceof Array && activeInstance.props.animated;
+
+    // clear any running animations
+    var intervalId = null;
+    clearInterval(activeInstance.state.animationLoop);
+
+    if (isAnimated) {
+      var animateFavicon = function animateFavicon() {
+        var nextAnimationIndex = (activeInstance.state.animationIndex + 1) % activeInstance.props.url.length;
+        Favicon.draw();
+        activeInstance.setState({ animationIndex: nextAnimationIndex });
+      };
+      intervalId = setInterval(animateFavicon, activeInstance.props.animationDelay);
+      animateFavicon();
+    } else {
+      Favicon.draw();
+    }
+
+    activeInstance.setState({ animationLoop: intervalId });
+  }
+
+  componentWillMount() {
     Favicon.mountedInstances.push(this);
     Favicon.update();
-  },
+  }
 
-  componentDidUpdate: function componentDidUpdate(prevProps) {
-    if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount) {
-      return;
-    }Favicon.update();
-  },
+  componentDidUpdate(prevProps) {
+    if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount) return;
 
-  render: function render() {
+    Favicon.update();
+  }
+
+  render() {
     return null;
   }
-});
+}
 
+Favicon.displayName = 'Favicon';
+Favicon.defaultProps = {
+  alertCount: null,
+  animated: true,
+  animationDelay: 500
+};
+Favicon.mountedInstances = [];
 module.exports = Favicon;
 
