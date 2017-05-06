@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cezary/react-favicon.git"
+    "url": "https://github.com/oflisback/react-favicon.git"
   },
   "keywords": [
     "react",
@@ -17,9 +17,9 @@
   "author": "Cezary Wojtkowski <cezary@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cezary/react-favicon/issues"
+    "url": "https://github.com/oflisback/react-favicon/issues"
   },
-  "homepage": "https://github.com/cezary/react-favicon",
+  "homepage": "https://github.com/oflisback/react-favicon",
   "peerDependencies": {
     "react": ">=0.12.0 <= ^15.5.4"
   },

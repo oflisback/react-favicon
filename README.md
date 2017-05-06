@@ -8,10 +8,6 @@ Control the favicon from a React app
 npm install react-favicon --save
 ```
 
-## Demo
-
-http://cezary.github.io/react-favicon
-
 ## Features
 
 * Update the favicon with a url or base64 encoded image
@@ -23,6 +19,3 @@ http://cezary.github.io/react-favicon
 ```javascript
 <Favicon url={[url1, url2, url3]}/>
 ```
-
-## Todo
-* ~~Alert bubbles~~
