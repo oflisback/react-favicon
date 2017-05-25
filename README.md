@@ -2,6 +2,10 @@
 
 Control the favicon from a React app
 
+## Demo
+
+http://oflisback.github.io/react-favicon
+
 ## Installation
 
 ```
