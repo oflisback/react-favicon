@@ -4,7 +4,7 @@
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
   "scripts": {
-    "build": "./node_modules/.bin/babel lib/react-favicon.js > dist/react-favicon.js"
+    "build": "babel lib/react-favicon.js > dist/react-favicon.js"
   },
   "repository": {
     "type": "git",
