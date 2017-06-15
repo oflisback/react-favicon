@@ -18,6 +18,7 @@ npm install react-favicon --save
 * Animate through a list of urls
 * Toggle animation
 * Alert bubbles
+* Allow some favicons to be kept on the page, which may be desirable for desktop Safari
 
 ## Usage
 ```javascript

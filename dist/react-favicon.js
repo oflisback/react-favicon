@@ -85,7 +85,7 @@ var Favicon = function (_React$Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
-      if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount) return;
+      if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount && prevProps.keepIconLink === this.props.keepIconLink) return;
 
       Favicon.update();
     }
@@ -104,6 +104,7 @@ var Favicon = function (_React$Component) {
     value: function draw() {
       if (typeof document === 'undefined') return;
 
+      var activeInstance = Favicon.getActiveInstance();
       if (typeof linkEl === 'undefined') {
         var head = document.getElementsByTagName('head')[0];
         linkEl = document.createElement('link');
@@ -112,12 +113,15 @@ var Favicon = function (_React$Component) {
 
         // remove existing favicons
         var links = head.getElementsByTagName("link");
-        for (var i = links.length; --i >= 0; /\bicon\b/i.test(links[i].getAttribute("rel")) && head.removeChild(links[i])) {}
+        for (var i = links.length; --i >= 0;) {
+          if (/\bicon\b/i.test(links[i].getAttribute("rel")) && !activeInstance.props.keepIconLink(links[i])) {
+            head.removeChild(links[i]);
+          }
+        }
 
         head.appendChild(linkEl);
       }
 
-      var activeInstance = Favicon.getActiveInstance();
       var currentUrl;
 
       if (activeInstance.props.url instanceof Array) {
@@ -169,7 +173,10 @@ Favicon.displayName = 'Favicon';
 Favicon.defaultProps = {
   alertCount: null,
   animated: true,
-  animationDelay: 500
+  animationDelay: 500,
+  keepIconLink: function keepIconLink() {
+    return false;
+  }
 };
 Favicon.mountedInstances = [];
 
