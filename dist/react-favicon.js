@@ -83,6 +83,12 @@ var Favicon = function (_React$Component) {
       Favicon.update();
     }
   }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var activeInstance = Favicon.getActiveInstance();
+      clearInterval(activeInstance.state.animationLoop);
+    }
+  }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
       if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount && prevProps.keepIconLink === this.props.keepIconLink) return;
