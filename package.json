@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/oflisback/react-favicon",
   "peerDependencies": {
-    "react": ">=0.12.0 <= 16.0.0"
+    "react": ">=0.12.0 <17.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
