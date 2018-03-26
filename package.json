@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
   "files": ["dist"],
