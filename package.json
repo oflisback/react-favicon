@@ -3,6 +3,7 @@
   "version": "0.0.13",
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
+  "files": ["dist"],
   "scripts": {
     "build": "babel lib/react-favicon.js > dist/react-favicon.js"
   },
