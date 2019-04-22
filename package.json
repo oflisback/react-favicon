@@ -3,7 +3,11 @@
   "version": "0.0.14",
   "description": "Favicon for react",
   "main": "dist/react-favicon.js",
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "react-favicon.d.ts"
+  ],
+  "types": "react-favicon.d.ts",
   "scripts": {
     "build": "babel lib/react-favicon.js > dist/react-favicon.js"
   },
