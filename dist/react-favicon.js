@@ -77,8 +77,8 @@ var Favicon = function (_React$Component) {
   }
 
   _createClass(Favicon, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       Favicon.mountedInstances.push(this);
       Favicon.update();
     }
