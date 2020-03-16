@@ -11,21 +11,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require('react');
 var linkEl;
 
+var faviconSize = 16;
+
 function drawIcon(src, num, cb) {
   var img = document.createElement('img');
   img.onload = function () {
     var canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
+    canvas.width = faviconSize;
+    canvas.height = faviconSize;
 
     var context = canvas.getContext('2d');
     context.clearRect(0, 0, img.width, img.height);
-    context.drawImage(img, 0, 0);
+    context.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    var top = img.height - 9,
-        left = img.width - 7 - 1,
-        bottom = 16,
-        right = 16,
+    var top = canvas.height - 9,
+        left = canvas.width - 7 - 1,
+        bottom = faviconSize,
+        right = faviconSize,
         radius = 2;
 
     context.fillStyle = '#F03D25';
