@@ -15,6 +15,7 @@ var faviconSize = 16;
 
 function drawIcon(src, num, cb) {
   var img = document.createElement('img');
+  img.crossOrigin = 'Anonymous';
   img.onload = function () {
     var canvas = document.createElement('canvas');
     canvas.width = faviconSize;
