@@ -21,6 +21,18 @@ npm install react-favicon --save
 - Toggle animation
 - Alert bubbles
 - Allow some favicons to be kept on the page, which may be desirable for desktop Safari
+- Custom icon overlay
+
+## Props
+
+| Name           | Type                       | Default     | Required | Description                                        |
+| -------------- | -------------------------- | ----------- | -------- | -------------------------------------------------- |
+| alertCount     | number                     | null        | No       | Number 1 - 9 to display as icon overlay.           |
+| animated       | boolean                    | true        | No       | True to animate favicon (for supported icons)      |
+| animationDelay | number                     | 500         | No       | Time between animation frames                      |
+| keepIconLink   | function()                 | () => false | No       | Return true to remove icon link from document head |
+| renderOverlay  | function(canvas, context)  | null        | No       | Function called to to draw custom favicon overlay  |
+| url            | string or array of strings |             | Yes      | Favicon url or array of url:s to animate the icons |
 
 ## Usage
 

@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "React favicon helper",
   "author": "Cezary Wojtkowski <cezary@gmail.com>",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.0.0 || ^17.0.0"
   },
   "devDependencies": {
     "microbundle-crl": "^0.13.10",

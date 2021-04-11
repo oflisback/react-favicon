@@ -5,24 +5,25 @@ import nyan from './nyan'
 
 const favicons = [
   {
-    name: 'Github',
-    url: 'img/github.ico'
+    animated: true,
+    name: 'Nyan cat',
+    url: nyan,
   },
   {
-    animated: true,
-    name: 'Nyancat',
-    url: nyan
+    name: 'Github',
+    url: 'img/github.ico',
   },
   {
     name: 'Wikipedia',
-    url: 'img/wikipedia.ico'
-  }
+    url: 'img/wikipedia.ico',
+  },
 ]
 
 const App = () => {
-  const [animated, setAnimated] = useState(false)
+  const [animated, setAnimated] = useState(true)
   const [alert, setAlert] = useState(false)
   const [alertCount, setAlertCount] = useState(1)
+  const [renderOverlay, setRenderOverlay] = useState(false)
   const [url, setUrl] = useState(favicons[0].url)
 
   return (
@@ -30,6 +31,39 @@ const App = () => {
       <Favicon
         alertCount={alert ? alertCount : null}
         animated={animated}
+        renderOverlay={
+          renderOverlay
+            ? (canvas, context) => {
+                const top = canvas.height - 9
+                const left = canvas.width - 7 - 1
+                const bottom = 16
+                const right = 16
+                const radius = 2
+
+                context.fillStyle = 'green'
+                context.strokeStyle = 'green'
+                context.lineWidth = 1
+
+                context.beginPath()
+                context.moveTo(left + radius, top)
+                context.quadraticCurveTo(left, top, left, top + radius)
+                context.lineTo(left, bottom - radius)
+                context.quadraticCurveTo(left, bottom, left + radius, bottom)
+                context.lineTo(right - radius, bottom)
+                context.quadraticCurveTo(right, bottom, right, bottom - radius)
+                context.lineTo(right, top + radius)
+                context.quadraticCurveTo(right, top, right - radius, top)
+                context.closePath()
+                context.fill()
+
+                context.font = 'bold 10px arial'
+                context.fillStyle = '#FFF'
+                context.textAlign = 'right'
+                context.textBaseline = 'top'
+                context.fillText('a', 15, 6)
+              }
+            : null
+        }
         url={url}
       />
       <div
@@ -40,21 +74,12 @@ const App = () => {
           height: '100vh',
           justifyContent: 'center',
           userSelect: 'none',
-          width: '100%'
+          width: '100%',
         }}
       >
         <div>
-          <div
-            style={{
-              margin: '5px',
-              textAlign: 'center',
-              width: '200px'
-            }}
-          >
-            Pick a favicon
-          </div>
           {favicons.map((favicon) => (
-            <div style={{ display: 'flex' }}>
+            <div key={favicon.url} style={{ display: 'flex' }}>
               <div
                 style={{
                   border: '1px solid black',
@@ -65,32 +90,44 @@ const App = () => {
                   lineHeight: '50px',
                   margin: '5px',
                   textAlign: 'center',
-                  width: '200px'
+                  width: '200px',
                 }}
                 onClick={() => setUrl(favicon.url)}
               >
                 {favicon.name}
               </div>
-              {favicon.animated && (
-                <div
-                  style={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '10px',
-                    visibility: favicon.url === url ? 'visible' : 'hidden'
-                  }}
-                >
-                  <div>Animated</div>
-                  <input
-                    onChange={(e) => setAnimated(e.target.checked)}
-                    type='checkbox'
-                    style={{ height: '20px', width: '20px' }}
-                  />
-                </div>
-              )}
             </div>
           ))}
+          <div
+            style={{
+              border: '1px solid black',
+              cursor: 'pointer',
+              fontSize: '20pt',
+              fontWeight:
+                typeof url === 'object' && url[0] === favicons[1].url
+                  ? 'bold'
+                  : 'normal',
+              height: '50px',
+              lineHeight: '50px',
+              margin: '5px',
+              textAlign: 'center',
+              width: '200px',
+            }}
+            onClick={() => setUrl([favicons[1].url, favicons[2].url])}
+          >
+            Combination
+          </div>
+          <div
+            style={{ alignItems: 'center', display: 'flex', height: '50px' }}
+          >
+            <input
+              checked={animated}
+              onChange={(e) => setAnimated(e.target.checked)}
+              style={{ height: '20px', width: '20px' }}
+              type='checkbox'
+            />
+            <div>Animated</div>
+          </div>
           <div
             style={{ alignItems: 'center', display: 'flex', height: '50px' }}
           >
@@ -107,7 +144,7 @@ const App = () => {
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    marginLeft: '5px'
+                    marginLeft: '5px',
                   }}
                 >
                   <div
@@ -116,7 +153,7 @@ const App = () => {
                       border: '1px solid black',
                       display: 'flex',
                       justifyContent: 'center',
-                      margin: '1px'
+                      margin: '1px',
                     }}
                   >
                     +
@@ -127,7 +164,7 @@ const App = () => {
                       border: '1px solid black',
                       display: 'flex',
                       justifyContent: 'center',
-                      margin: '1px'
+                      margin: '1px',
                     }}
                   >
                     -
@@ -135,6 +172,16 @@ const App = () => {
                 </div>
               </>
             )}
+          </div>
+          <div
+            style={{ alignItems: 'center', display: 'flex', height: '50px' }}
+          >
+            <input
+              onChange={(e) => setRenderOverlay(e.target.checked)}
+              type='checkbox'
+              style={{ height: '20px', width: '20px' }}
+            />
+            <div>Custom render overlay function</div>
           </div>
         </div>
       </div>

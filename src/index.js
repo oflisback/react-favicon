@@ -1,49 +1,55 @@
 'use strict'
 
-var React = require('react')
-var linkEl
+const React = require('react')
+const PropTypes = require('prop-types')
 
-var faviconSize = 16
+const faviconSize = 16
+let linkEl
 
-function drawIcon(src, num, cb) {
-  var img = document.createElement('img')
+function drawIcon({ url: src, alertCount: num, callback: cb, renderOverlay }) {
+  const img = document.createElement('img')
   img.crossOrigin = 'Anonymous'
   img.onload = function () {
-    var canvas = document.createElement('canvas')
+    const canvas = document.createElement('canvas')
     canvas.width = faviconSize
     canvas.height = faviconSize
 
-    var context = canvas.getContext('2d')
+    const context = canvas.getContext('2d')
     context.clearRect(0, 0, img.width, img.height)
     context.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-    var top = canvas.height - 9
-    var left = canvas.width - 7 - 1
-    var bottom = faviconSize
-    var right = faviconSize
-    var radius = 2
+    if (num) {
+      const top = canvas.height - 9
+      const left = canvas.width - 7 - 1
+      const bottom = faviconSize
+      const right = faviconSize
+      const radius = 2
 
-    context.fillStyle = '#F03D25'
-    context.strokeStyle = '#F03D25'
-    context.lineWidth = 1
+      context.fillStyle = '#F03D25'
+      context.strokeStyle = '#F03D25'
+      context.lineWidth = 1
 
-    context.beginPath()
-    context.moveTo(left + radius, top)
-    context.quadraticCurveTo(left, top, left, top + radius)
-    context.lineTo(left, bottom - radius)
-    context.quadraticCurveTo(left, bottom, left + radius, bottom)
-    context.lineTo(right - radius, bottom)
-    context.quadraticCurveTo(right, bottom, right, bottom - radius)
-    context.lineTo(right, top + radius)
-    context.quadraticCurveTo(right, top, right - radius, top)
-    context.closePath()
-    context.fill()
+      context.beginPath()
+      context.moveTo(left + radius, top)
+      context.quadraticCurveTo(left, top, left, top + radius)
+      context.lineTo(left, bottom - radius)
+      context.quadraticCurveTo(left, bottom, left + radius, bottom)
+      context.lineTo(right - radius, bottom)
+      context.quadraticCurveTo(right, bottom, right, bottom - radius)
+      context.lineTo(right, top + radius)
+      context.quadraticCurveTo(right, top, right - radius, top)
+      context.closePath()
+      context.fill()
 
-    context.font = 'bold 10px arial'
-    context.fillStyle = '#FFF'
-    context.textAlign = 'right'
-    context.textBaseline = 'top'
-    context.fillText(num, 15, 6)
+      context.font = 'bold 10px arial'
+      context.fillStyle = '#FFF'
+      context.textAlign = 'right'
+      context.textBaseline = 'top'
+      context.fillText(num, 15, 6)
+    }
+    if (renderOverlay) {
+      renderOverlay(canvas, context)
+    }
 
     cb(null, context.canvas.toDataURL())
   }
@@ -52,15 +58,6 @@ function drawIcon(src, num, cb) {
 
 class Favicon extends React.Component {
   static displayName = 'Favicon'
-
-  static defaultProps = {
-    alertCount: null,
-    animated: true,
-    animationDelay: 500,
-    keepIconLink: function () {
-      return false
-    }
-  }
 
   static mountedInstances = []
 
@@ -100,9 +97,14 @@ class Favicon extends React.Component {
       currentUrl = activeInstance.props.url
     }
 
-    if (activeInstance.props.alertCount) {
-      drawIcon(currentUrl, activeInstance.props.alertCount, function (_, url) {
-        linkEl.href = url
+    if (activeInstance.props.alertCount || activeInstance.props.renderOverlay) {
+      drawIcon({
+        alertCount: activeInstance.props.alertCount,
+        callback: (_, url) => {
+          linkEl.href = url
+        },
+        renderOverlay: activeInstance.props.renderOverlay,
+        url: currentUrl,
       })
     } else {
       linkEl.href = currentUrl
@@ -143,7 +145,7 @@ class Favicon extends React.Component {
   state = {
     animationIndex: 0,
     animationLoop: null,
-    animationRunning: false
+    animationRunning: false,
   }
 
   componentDidMount() {
@@ -161,6 +163,7 @@ class Favicon extends React.Component {
       prevProps.url === this.props.url &&
       prevProps.animated === this.props.animated &&
       prevProps.alertCount === this.props.alertCount &&
+      prevProps.renderOverlay === this.props.renderOverlay &&
       prevProps.keepIconLink === this.props.keepIconLink
     )
       return
@@ -171,6 +174,26 @@ class Favicon extends React.Component {
   render() {
     return null
   }
+}
+
+Favicon.defaultProps = {
+  alertCount: null,
+  animated: true,
+  animationDelay: 500,
+  keepIconLink: () => false,
+  renderOverlay: null,
+  url: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.string,
+  ]).isRequired,
+}
+
+Favicon.propTypes = {
+  alertCount: PropTypes.number,
+  animated: PropTypes.bool,
+  animationDelay: PropTypes.number,
+  keepIconLink: PropTypes.func,
+  renderOverlay: PropTypes.func,
 }
 
 module.exports = Favicon
