@@ -6,12 +6,12 @@ const PropTypes = require('prop-types')
 const CanvasSize = 16
 let linkEl
 
-const drawAlert = (context, alertCount) => {
+const drawAlert = (context, { alertCount, fillColor, text, textColor }) => {
   context.font = 'bold 10px arial'
   const Padding = 3
 
-  const w = context.measureText(alertCount).width + Padding
-  const x = CanvasSize - w - Padding
+  const w = context.measureText(text).width + Padding
+  const x = CanvasSize - w
   const y = CanvasSize / 2 - Padding
   const h = Padding + CanvasSize / 2
   const r = Math.min(w / 2, h / 2)
@@ -23,15 +23,22 @@ const drawAlert = (context, alertCount) => {
   context.arcTo(x, y + h, x, y, r)
   context.arcTo(x, y, x + w, y, r)
   context.closePath()
-  context.fillStyle = 'red'
+  context.fillStyle = fillColor
   context.fill()
-  context.fillStyle = 'white'
+  context.fillStyle = textColor
   context.textBaseline = 'bottom'
   context.textAlign = 'right'
-  context.fillText(alertCount, CanvasSize - 1.5 * Padding, CanvasSize)
+  context.fillText(text, CanvasSize - Padding / 2, CanvasSize)
 }
 
-function drawIcon({ url: src, alertCount, callback: cb, renderOverlay }) {
+function drawIcon({
+  alertCount,
+  alertFillColor,
+  alertTextColor,
+  callback,
+  renderOverlay,
+  url: src,
+}) {
   const img = document.createElement('img')
   img.crossOrigin = 'Anonymous'
   img.onload = function () {
@@ -44,14 +51,18 @@ function drawIcon({ url: src, alertCount, callback: cb, renderOverlay }) {
     context.drawImage(img, 0, 0, canvas.width, canvas.height)
 
     if (alertCount) {
-      drawAlert(context, alertCount)
+      drawAlert(context, {
+        fillColor: alertFillColor,
+        textColor: alertTextColor,
+        text: alertCount,
+      })
     }
 
     if (renderOverlay) {
       renderOverlay(canvas, context)
     }
 
-    cb(context.canvas.toDataURL())
+    callback(context.canvas.toDataURL())
   }
   img.src = src
 }
@@ -100,6 +111,8 @@ class Favicon extends React.Component {
     if (activeInstance.props.alertCount || activeInstance.props.renderOverlay) {
       drawIcon({
         alertCount: activeInstance.props.alertCount,
+        alertFillColor: activeInstance.props.alertFillColor,
+        alertTextColor: activeInstance.props.alertTextColor,
         callback: (url) => {
           linkEl.href = url
         },
@@ -163,6 +176,8 @@ class Favicon extends React.Component {
       prevProps.url === this.props.url &&
       prevProps.animated === this.props.animated &&
       prevProps.alertCount === this.props.alertCount &&
+      prevProps.alertFillColor === this.props.alertFillColor &&
+      prevProps.alertTextColor === this.props.alertTextColor &&
       prevProps.renderOverlay === this.props.renderOverlay &&
       prevProps.keepIconLink === this.props.keepIconLink
     )
@@ -178,6 +193,8 @@ class Favicon extends React.Component {
 
 Favicon.defaultProps = {
   alertCount: null,
+  alertFillColor: 'red',
+  alertTextColor: 'white',
   animated: true,
   animationDelay: 500,
   keepIconLink: () => false,
@@ -187,6 +204,8 @@ Favicon.defaultProps = {
 
 Favicon.propTypes = {
   alertCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  alertFillColor: PropTypes.string,
+  alertTextColor: PropTypes.string,
   animated: PropTypes.bool,
   animationDelay: PropTypes.number,
   keepIconLink: PropTypes.func,

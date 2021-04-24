@@ -23,6 +23,8 @@ const App = () => {
   const [animated, setAnimated] = useState(true)
   const [alert, setAlert] = useState(false)
   const [alertCount, setAlertCount] = useState(1)
+  const [alertFillColor, setAlertFillColor] = useState('red')
+  const [alertTextColor, setAlertTextColor] = useState('white')
   const [renderOverlay, setRenderOverlay] = useState(false)
   const [url, setUrl] = useState(favicons[0].url)
 
@@ -30,6 +32,8 @@ const App = () => {
     <>
       <Favicon
         alertCount={alert ? alertCount : null}
+        alertFillColor={alertFillColor}
+        alertTextColor={alertTextColor}
         animated={animated}
         renderOverlay={
           renderOverlay
@@ -172,6 +176,52 @@ const App = () => {
                 </div>
               </>
             )}
+          </div>
+          <div style={{ alignItems: 'center', display: 'flex' }}>
+            {['red', 'black', 'blue'].map((color) => (
+              <div
+                key={color}
+                onClick={() => setAlertFillColor(color)}
+                style={{
+                  border:
+                    alertFillColor === color
+                      ? '2px solid black'
+                      : '1px solid black',
+                  margin: '2px',
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: color,
+                }}
+              />
+            ))}
+            <div
+              style={{ alignItems: 'center', display: 'flex', height: '50px' }}
+            >
+              <div style={{ marginLeft: '4px' }}>Alert fill color</div>
+            </div>
+          </div>
+          <div style={{ alignItems: 'center', display: 'flex' }}>
+            {['white', 'black', 'yellow'].map((color) => (
+              <div
+                key={color}
+                onClick={() => setAlertTextColor(color)}
+                style={{
+                  border:
+                    alertTextColor === color
+                      ? '2px solid black'
+                      : '1px solid black',
+                  margin: '2px',
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: color,
+                }}
+              />
+            ))}
+            <div
+              style={{ alignItems: 'center', display: 'flex', height: '50px' }}
+            >
+              <div style={{ marginLeft: '4px' }}>Alert text color</div>
+            </div>
           </div>
           <div
             style={{ alignItems: 'center', display: 'flex', height: '50px' }}
