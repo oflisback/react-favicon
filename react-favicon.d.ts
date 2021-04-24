@@ -2,7 +2,7 @@ import * as React from "react";
 
 export interface FaviconProps {
   readonly url: string | string[];
-  readonly alertCount?: number;
+  readonly alertCount?: number | string;
   readonly animated?: boolean;
   readonly animationDelay?: number;
   readonly keepIconLink?: () => boolean;

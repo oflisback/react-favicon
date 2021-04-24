@@ -27,7 +27,7 @@ npm install react-favicon --save
 
 | Name           | Type                       | Default     | Required | Description                                        |
 | -------------- | -------------------------- | ----------- | -------- | -------------------------------------------------- |
-| alertCount     | number                     | null        | No       | Number 1 - 9 to display as icon overlay.           |
+| alertCount     | number or string           | null        | No       | Number or string to display as icon overlay.       |
 | animated       | boolean                    | true        | No       | True to animate favicon (for supported icons)      |
 | animationDelay | number                     | 500         | No       | Time between animation frames                      |
 | keepIconLink   | function()                 | () => false | No       | Return true to remove icon link from document head |

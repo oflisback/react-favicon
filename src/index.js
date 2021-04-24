@@ -3,55 +3,55 @@
 const React = require('react')
 const PropTypes = require('prop-types')
 
-const faviconSize = 16
+const CanvasSize = 16
 let linkEl
 
-function drawIcon({ url: src, alertCount: num, callback: cb, renderOverlay }) {
+const drawAlert = (context, alertCount) => {
+  context.font = 'bold 10px arial'
+  const Padding = 3
+
+  const w = context.measureText(alertCount).width + Padding
+  const x = CanvasSize - w - Padding
+  const y = CanvasSize / 2 - Padding
+  const h = Padding + CanvasSize / 2
+  const r = Math.min(w / 2, h / 2)
+
+  context.beginPath()
+  context.moveTo(x + r, y)
+  context.arcTo(x + w, y, x + w, y + h, r)
+  context.arcTo(x + w, y + h, x, y + h, r)
+  context.arcTo(x, y + h, x, y, r)
+  context.arcTo(x, y, x + w, y, r)
+  context.closePath()
+  context.fillStyle = 'red'
+  context.fill()
+  context.fillStyle = 'white'
+  context.textBaseline = 'bottom'
+  context.textAlign = 'right'
+  context.fillText(alertCount, CanvasSize - 1.5 * Padding, CanvasSize)
+}
+
+function drawIcon({ url: src, alertCount, callback: cb, renderOverlay }) {
   const img = document.createElement('img')
   img.crossOrigin = 'Anonymous'
   img.onload = function () {
     const canvas = document.createElement('canvas')
-    canvas.width = faviconSize
-    canvas.height = faviconSize
+    canvas.width = CanvasSize
+    canvas.height = CanvasSize
 
     const context = canvas.getContext('2d')
     context.clearRect(0, 0, img.width, img.height)
     context.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-    if (num) {
-      const top = canvas.height - 9
-      const left = canvas.width - 7 - 1
-      const bottom = faviconSize
-      const right = faviconSize
-      const radius = 2
-
-      context.fillStyle = '#F03D25'
-      context.strokeStyle = '#F03D25'
-      context.lineWidth = 1
-
-      context.beginPath()
-      context.moveTo(left + radius, top)
-      context.quadraticCurveTo(left, top, left, top + radius)
-      context.lineTo(left, bottom - radius)
-      context.quadraticCurveTo(left, bottom, left + radius, bottom)
-      context.lineTo(right - radius, bottom)
-      context.quadraticCurveTo(right, bottom, right, bottom - radius)
-      context.lineTo(right, top + radius)
-      context.quadraticCurveTo(right, top, right - radius, top)
-      context.closePath()
-      context.fill()
-
-      context.font = 'bold 10px arial'
-      context.fillStyle = '#FFF'
-      context.textAlign = 'right'
-      context.textBaseline = 'top'
-      context.fillText(num, 15, 6)
+    if (alertCount) {
+      drawAlert(context, alertCount)
     }
+
     if (renderOverlay) {
       renderOverlay(canvas, context)
     }
 
-    cb(null, context.canvas.toDataURL())
+    cb(context.canvas.toDataURL())
   }
   img.src = src
 }
@@ -100,7 +100,7 @@ class Favicon extends React.Component {
     if (activeInstance.props.alertCount || activeInstance.props.renderOverlay) {
       drawIcon({
         alertCount: activeInstance.props.alertCount,
-        callback: (_, url) => {
+        callback: (url) => {
           linkEl.href = url
         },
         renderOverlay: activeInstance.props.renderOverlay,
@@ -186,7 +186,7 @@ Favicon.defaultProps = {
 }
 
 Favicon.propTypes = {
-  alertCount: PropTypes.number,
+  alertCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animated: PropTypes.bool,
   animationDelay: PropTypes.number,
   keepIconLink: PropTypes.func,
