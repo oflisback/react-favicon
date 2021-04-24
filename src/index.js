@@ -182,10 +182,7 @@ Favicon.defaultProps = {
   animationDelay: 500,
   keepIconLink: () => false,
   renderOverlay: null,
-  url: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.string),
-    PropTypes.string,
-  ]).isRequired,
+  url: null,
 }
 
 Favicon.propTypes = {
@@ -194,6 +191,10 @@ Favicon.propTypes = {
   animationDelay: PropTypes.number,
   keepIconLink: PropTypes.func,
   renderOverlay: PropTypes.func,
+  url: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.string,
+  ]).isRequired,
 }
 
 module.exports = Favicon
