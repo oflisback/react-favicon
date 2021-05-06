@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "React favicon helper",
   "author": "Cezary Wojtkowski <cezary@gmail.com>",
   "license": "MIT",
@@ -23,6 +23,7 @@
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
+  "types": "react-favicon.d.ts",
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0"
   },
