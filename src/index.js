@@ -4,7 +4,7 @@ const React = require('react')
 const PropTypes = require('prop-types')
 
 const CanvasSize = 16
-let linkEl
+const linkElements = []
 
 const drawAlert = (context, { alertCount, fillColor, text, textColor }) => {
   context.font = 'bold 10px arial'
@@ -80,11 +80,17 @@ class Favicon extends React.Component {
     if (typeof document === 'undefined') return
 
     var activeInstance = Favicon.getActiveInstance()
-    if (typeof linkEl === 'undefined') {
+    if (linkElements.length === 0) {
       var head = document.getElementsByTagName('head')[0]
-      linkEl = document.createElement('link')
+
+      const linkEl = document.createElement('link')
       linkEl.type = 'image/x-icon'
       linkEl.rel = 'icon'
+
+      const linkApple = document.createElement('link')
+      linkApple.rel = 'apple-touch-icon'
+
+      linkElements.push(linkEl, linkApple)
 
       // remove existing favicons
       var links = head.getElementsByTagName('link')
@@ -97,7 +103,7 @@ class Favicon extends React.Component {
         }
       }
 
-      head.appendChild(linkEl)
+      linkElements.forEach((el) => head.appendChild(el))
     }
 
     var currentUrl
@@ -114,13 +120,13 @@ class Favicon extends React.Component {
         alertFillColor: activeInstance.props.alertFillColor,
         alertTextColor: activeInstance.props.alertTextColor,
         callback: (url) => {
-          linkEl.href = url
+          linkElements.forEach((el) => el.href = url)
         },
         renderOverlay: activeInstance.props.renderOverlay,
         url: currentUrl,
       })
     } else {
-      linkEl.href = currentUrl
+      linkElements.forEach((el) => el.href = currentUrl)
     }
   }
 
