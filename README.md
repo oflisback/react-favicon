@@ -30,6 +30,7 @@ npm install react-favicon --save
 | alertCount     | number or string           | null        | No       | Number or string to display as icon overlay.       |
 | alertFillColor | string                     | red         | No       | Alert bubble background color.                     |
 | alertTextColor | string                     | white       | No       | Alert bubble text color.                           |
+| iconSize       | number                     | 16          | No       | Size of the favicon to avoid pixelization          |
 | animated       | boolean                    | true        | No       | True to animate favicon (for supported icons)      |
 | animationDelay | number                     | 500         | No       | Time between animation frames                      |
 | keepIconLink   | function()                 | () => false | No       | Return true to remove icon link from document head |
