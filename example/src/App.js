@@ -21,11 +21,11 @@ const favicons = [
 
 const App = () => {
   const [animated, setAnimated] = useState(true)
-  const [alert, setAlert] = useState(false)
-  const [alertCount, setAlertCount] = useState(1)
+  const [alertCount, setAlertCount] = useState(undefined)
   const [alertFillColor, setAlertFillColor] = useState('red')
   const [alertTextColor, setAlertTextColor] = useState('white')
   const [renderOverlay, setRenderOverlay] = useState(false)
+  const [iconSize, setIconSize] = useState(undefined);
   const [url, setUrl] = useState(favicons[0].url)
 
   return (
@@ -69,6 +69,7 @@ const App = () => {
             : null
         }
         url={url}
+        iconSize={iconSize}
       />
       <div
         style={{
@@ -136,46 +137,13 @@ const App = () => {
             style={{ alignItems: 'center', display: 'flex', height: '50px' }}
           >
             <input
-              onChange={(e) => setAlert(e.target.checked)}
+              onChange={(e) => setAlertCount(e.target.checked ? 1 : 0)}
               type='checkbox'
               style={{ height: '20px', width: '20px' }}
+              checked={alertCount > 0}
             />
             <div>Alert count</div>
-            {alert && (
-              <>
-                : {alertCount}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: '5px',
-                  }}
-                >
-                  <div
-                    onClick={() => setAlertCount(alertCount + 1)}
-                    style={{
-                      border: '1px solid black',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      margin: '1px',
-                    }}
-                  >
-                    +
-                  </div>
-                  <div
-                    onClick={() => setAlertCount(Math.max(0, alertCount - 1))}
-                    style={{
-                      border: '1px solid black',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      margin: '1px',
-                    }}
-                  >
-                    -
-                  </div>
-                </div>
-              </>
-            )}
+            <input type={"text"} value={alertCount} onChange={(e) => setAlertCount(e.target.value)} />
           </div>
           <div style={{ alignItems: 'center', display: 'flex' }}>
             {['red', 'black', 'blue'].map((color) => (
@@ -198,6 +166,28 @@ const App = () => {
               style={{ alignItems: 'center', display: 'flex', height: '50px' }}
             >
               <div style={{ marginLeft: '4px' }}>Alert fill color</div>
+            </div>
+          </div>
+          <div style={{ alignItems: 'center', display: 'flex' }}>
+            {[16, 32, 57, 72, 96, 114, 120, 128, 144, 152, 180, 192, 195].map((size) => (
+              <div
+                key={size}
+                onClick={() => setIconSize(size)}
+                value={size}
+                style={{
+                  border: iconSize === size ? "2px solid black" : "1px solid black",
+                  margin: '2px',
+                  width: '25px',
+                  height: '20px',
+                }}
+              >
+                {size}
+              </div>
+            ))}
+            <div
+              style={{ alignItems: 'center', display: 'flex', height: '50px' }}
+            >
+              <div style={{ marginLeft: '4px' }}>Icon size</div>
             </div>
           </div>
           <div style={{ alignItems: 'center', display: 'flex' }}>

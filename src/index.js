@@ -3,17 +3,24 @@
 const React = require('react')
 const PropTypes = require('prop-types')
 
-const CanvasSize = 16
+const DefaultCanvasSize = 16
 const linkElements = []
 
-const drawAlert = (context, { alertCount, fillColor, text, textColor }) => {
-  context.font = 'bold 10px arial'
-  const Padding = 3
+const drawAlert = (context, { fillColor, text, textColor, canvasSize }) => {
+  // Allow same looking padding over differents iconSizes
+  const Padding = canvasSize / 5;
+  // Allow readable text across differnts iconSizes
+  context.font = `bold ${canvasSize - (Padding * 2)}px arial`;
 
-  const w = context.measureText(text).width + Padding
-  const x = CanvasSize - w
-  const y = CanvasSize / 2 - Padding
-  const h = Padding + CanvasSize / 2
+  const w = Math.min(
+    // Take the text with if it's smaller than available space (eg: '2')
+    context.measureText(text).width,
+    // Or take the maximum size we'll force our text to fit in anyway (eg: '1000000')
+    canvasSize - Padding) + Padding
+
+  const x = canvasSize - w
+  const y = canvasSize / 2 - Padding
+  const h = Padding + canvasSize / 2
   const r = Math.min(w / 2, h / 2)
 
   context.beginPath()
@@ -28,7 +35,12 @@ const drawAlert = (context, { alertCount, fillColor, text, textColor }) => {
   context.fillStyle = textColor
   context.textBaseline = 'bottom'
   context.textAlign = 'right'
-  context.fillText(text, CanvasSize - Padding / 2, CanvasSize)
+  context.fillText(
+    text,
+    canvasSize - Padding / 2,
+    canvasSize,
+    // This will prevent the text from going outside the favicon, instead it'll squeeze his with to fit in
+    canvasSize - Padding)
 }
 
 function drawIcon({
@@ -38,13 +50,14 @@ function drawIcon({
   callback,
   renderOverlay,
   url: src,
+  canvasSize,
 }) {
   const img = document.createElement('img')
   img.crossOrigin = 'Anonymous'
   img.onload = function () {
     const canvas = document.createElement('canvas')
-    canvas.width = CanvasSize
-    canvas.height = CanvasSize
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
 
     const context = canvas.getContext('2d')
     context.clearRect(0, 0, img.width, img.height)
@@ -55,13 +68,13 @@ function drawIcon({
         fillColor: alertFillColor,
         textColor: alertTextColor,
         text: alertCount,
+        canvasSize,
       })
     }
 
     if (renderOverlay) {
       renderOverlay(canvas, context)
     }
-
     callback(context.canvas.toDataURL())
   }
   img.src = src
@@ -124,6 +137,7 @@ class Favicon extends React.Component {
         },
         renderOverlay: activeInstance.props.renderOverlay,
         url: currentUrl,
+        canvasSize: activeInstance.props.iconSize
       })
     } else {
       linkElements.forEach((el) => el.href = currentUrl)
@@ -185,7 +199,8 @@ class Favicon extends React.Component {
       prevProps.alertFillColor === this.props.alertFillColor &&
       prevProps.alertTextColor === this.props.alertTextColor &&
       prevProps.renderOverlay === this.props.renderOverlay &&
-      prevProps.keepIconLink === this.props.keepIconLink
+      prevProps.keepIconLink === this.props.keepIconLink &&
+      prevProps.iconSize === this.props.iconSize
     )
       return
 
@@ -198,6 +213,7 @@ class Favicon extends React.Component {
 }
 
 Favicon.defaultProps = {
+  iconSize: DefaultCanvasSize,
   alertCount: null,
   alertFillColor: 'red',
   alertTextColor: 'white',
@@ -209,6 +225,7 @@ Favicon.defaultProps = {
 }
 
 Favicon.propTypes = {
+  iconSize: PropTypes.number,
   alertCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   alertFillColor: PropTypes.string,
   alertTextColor: PropTypes.string,
