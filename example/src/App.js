@@ -25,7 +25,7 @@ const App = () => {
   const [alertFillColor, setAlertFillColor] = useState('red')
   const [alertTextColor, setAlertTextColor] = useState('white')
   const [renderOverlay, setRenderOverlay] = useState(false)
-  const [iconSize, setIconSize] = useState(undefined);
+  const [iconSize, setIconSize] = useState(16);
   const [url, setUrl] = useState(favicons[0].url)
 
   return (
@@ -38,11 +38,13 @@ const App = () => {
         renderOverlay={
           renderOverlay
             ? (canvas, context) => {
-                const top = canvas.height - 9
-                const left = canvas.width - 7 - 1
-                const bottom = 16
-                const right = 16
-                const radius = 2
+
+                // Create a rounded square taking 1/4 of the icon size;
+                const top = canvas.height / 2;
+                const left = canvas.width / 2;
+                const bottom = canvas.height;
+                const right = canvas.width;
+                const radius = iconSize / 8;
 
                 context.fillStyle = 'green'
                 context.strokeStyle = 'green'
@@ -60,11 +62,13 @@ const App = () => {
                 context.closePath()
                 context.fill()
 
-                context.font = 'bold 10px arial'
+                // Make the text size dynamic depending on the icon size
+                // Useful to avoid shrinking on bigger high res icons
+                context.font = `bold ${iconSize / 1.8}px arial`
                 context.fillStyle = '#FFF'
-                context.textAlign = 'right'
+                context.textAlign = 'left'
                 context.textBaseline = 'top'
-                context.fillText('a', 15, 6)
+                context.fillText('a', left + canvas.width / 8, top);
               }
             : null
         }
