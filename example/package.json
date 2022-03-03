@@ -12,8 +12,8 @@
   "dependencies": {
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
-    "react-scripts": "link:../node_modules/react-scripts",
-    "react-favicon": "link:.."
+    "react-favicon": "link:..",
+    "react-scripts": "link:../node_modules/react-scripts"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
