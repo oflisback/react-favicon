@@ -146,22 +146,50 @@ class Favicon extends React.Component {
 
   static update() {
     if (typeof document === 'undefined') return
-
+    
     var activeInstance = Favicon.getActiveInstance()
-    var isAnimated =
-      activeInstance.props.url instanceof Array && activeInstance.props.animated
-
+    var validAnimation = activeInstance.props.url instanceof Array
+    var isAnimated = validAnimation && activeInstance.props.animated
+    var moveToEnd = validAnimation && (activeInstance.props.once  || 
+      activeInstance.props.animationIndex !== 0)
+      
     // clear any running animations
     var intervalId = null
     clearInterval(activeInstance.state.animationLoop)
-
-    if (isAnimated) {
+    
+    if (isAnimated || moveToEnd) {
       var animateFavicon = function animateFavicon() {
-        var nextAnimationIndex =
-          (activeInstance.state.animationIndex + 1) %
+        if (!isAnimated) {
+          if (!activeInstance.props.once) {
+            if (activeInstance.state.animationIndex === 0) {
+              Favicon.draw()
+              return
+            }
+          } else {
+            if (activeInstance.state.animationIndex ===
+              activeInstance.props.url.length - 1) {
+              Favicon.draw()
+              return
+            }
+          }
+        }
+        var nextAnimationLerpIndex =
+          (activeInstance.state.animationLerpIndex + 1) %
+          (activeInstance.props.url.length * 2)
+        var nextAnimationIndex = activeInstance.props.animationIndex
+        if (!activeInstance.props.lerp || nextAnimationLerpIndex 
+          < activeInstance.props.url.length) {
+          nextAnimationIndex = nextAnimationLerpIndex % 
           activeInstance.props.url.length
+        } else {
+            nextAnimationIndex = activeInstance.props.url.length * 
+            2 - nextAnimationLerpIndex - 1
+        }
         Favicon.draw()
-        activeInstance.setState({ animationIndex: nextAnimationIndex })
+        activeInstance.setState({ 
+          animationIndex: nextAnimationIndex, 
+          animationLerpIndex: nextAnimationLerpIndex 
+        })
       }
       intervalId = setInterval(
         animateFavicon,
@@ -177,6 +205,7 @@ class Favicon extends React.Component {
 
   state = {
     animationIndex: 0,
+    animationLerpIndex: 0,
     animationLoop: null,
     animationRunning: false,
   }
@@ -218,6 +247,8 @@ Favicon.defaultProps = {
   alertFillColor: 'red',
   alertTextColor: 'white',
   animated: true,
+  once: false,
+  lerp: false,
   animationDelay: 500,
   keepIconLink: () => false,
   renderOverlay: null,
@@ -230,6 +261,8 @@ Favicon.propTypes = {
   alertFillColor: PropTypes.string,
   alertTextColor: PropTypes.string,
   animated: PropTypes.bool,
+  lerp: PropTypes.bool,
+  once: PropTypes.bool,
   animationDelay: PropTypes.number,
   keepIconLink: PropTypes.func,
   renderOverlay: PropTypes.func,
