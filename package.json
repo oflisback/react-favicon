@@ -1,6 +1,6 @@
 {
   "name": "react-favicon",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "React favicon helper",
   "main": "dist/index.js",
   "repository": "oflisback/react-favicon",
