@@ -2,57 +2,44 @@
   "name": "react-favicon",
   "version": "1.0.1",
   "description": "React favicon helper",
-  "author": "Cezary Wojtkowski <cezary@gmail.com>",
-  "license": "MIT",
-  "repository": "oflisback/react-favicon",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
-  "source": "src/index.js",
+  "repository": "oflisback/react-favicon",
+  "author": "Cezary Wojtkowski <cezary@gmail.com>",
+  "maintainers": [
+    "Ola Flisbäck <ola.flisback@gmail.com>"
+  ],
+  "license": "MIT",
   "engines": {
     "node": ">=10"
   },
-  "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "prepare": "run-s build",
-    "test": "run-s test:unit test:lint test:build",
-    "test:build": "run-s build",
-    "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
-  },
-  "types": "react-favicon.d.ts",
-  "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "cross-env": "^7.0.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-config-standard-react": "^9.2.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "gh-pages": "^2.2.0",
-    "microbundle-crl": "^0.13.10",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^3.4.1"
-  },
+  "module": "dist/index.js",
   "files": [
     "dist",
     "react-favicon.d.ts"
   ],
+  "scripts": {
+    "build": "tsup",
+    "format": "prettier -w lib/",
+    "lint": "eslint lib/",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build"
+  },
+  "types": "react-favicon.d.ts",
+  "keywords": [],
   "dependencies": {
     "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "@semantic-release/git": "^10.0.1",
+    "eslint": "^8.36.0",
+    "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^2.2.0",
+    "prettier": "^2.8.4",
+    "semantic-release": "^20.1.1",
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
   }
 }

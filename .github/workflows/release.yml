@@ -1,0 +1,40 @@
+name: Release npm package
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup build environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Run actions-setup
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build bundle
+        run: pnpm build --if-present
+
+      - name: Release package
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

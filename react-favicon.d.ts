@@ -8,8 +8,13 @@ export interface FaviconProps {
   readonly animated?: boolean;
   readonly animationDelay?: number;
   readonly keepIconLink?: () => boolean;
-  readonly renderOverlay?: (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => void;
+  readonly renderOverlay?: (
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D
+  ) => void;
   readonly iconSize?: number;
 }
 
-export default class Favicon extends React.Component<FaviconProps> {}
+declare const Favicon: React.SFC<FaviconProps>;
+
+export default Favicon;

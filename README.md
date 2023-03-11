@@ -46,15 +46,15 @@ npm install react-favicon --save
 See [example](./example) for the demo page source code. Basic usage is as simple as importing the react-favicon package and including a Favicon component in the react component tree.
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Favicon from 'react-favicon'
+import React from "react";
+import ReactDOM from "react-dom";
+import Favicon from "react-favicon";
 
 ReactDOM.render(
   <div>
-    <Favicon url='http://oflisback.github.io/react-favicon/img/github.ico' />
+    <Favicon url="http://oflisback.github.io/react-favicon/img/github.ico" />
     <h1>Hello, Favicon!</h1>
   </div>,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
