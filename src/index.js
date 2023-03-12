@@ -1,16 +1,16 @@
-"use strict";
+'use strict'
 
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const DefaultCanvasSize = 16;
-const linkElements = [];
+const DefaultCanvasSize = 16
+const linkElements = []
 
 const drawAlert = (context, { fillColor, text, textColor, canvasSize }) => {
   // Allow same looking padding over differents iconSizes
-  const Padding = canvasSize / 5;
+  const Padding = canvasSize / 5
   // Allow readable text across differnts iconSizes
-  context.font = `bold ${canvasSize - Padding * 2}px arial`;
+  context.font = `bold ${canvasSize - Padding * 2}px arial`
 
   const w =
     Math.min(
@@ -18,33 +18,33 @@ const drawAlert = (context, { fillColor, text, textColor, canvasSize }) => {
       context.measureText(text).width,
       // Or take the maximum size we'll force our text to fit in anyway (eg: '1000000')
       canvasSize - Padding
-    ) + Padding;
+    ) + Padding
 
-  const x = canvasSize - w;
-  const y = canvasSize / 2 - Padding;
-  const h = Padding + canvasSize / 2;
-  const r = Math.min(w / 2, h / 2);
+  const x = canvasSize - w
+  const y = canvasSize / 2 - Padding
+  const h = Padding + canvasSize / 2
+  const r = Math.min(w / 2, h / 2)
 
-  context.beginPath();
-  context.moveTo(x + r, y);
-  context.arcTo(x + w, y, x + w, y + h, r);
-  context.arcTo(x + w, y + h, x, y + h, r);
-  context.arcTo(x, y + h, x, y, r);
-  context.arcTo(x, y, x + w, y, r);
-  context.closePath();
-  context.fillStyle = fillColor;
-  context.fill();
-  context.fillStyle = textColor;
-  context.textBaseline = "bottom";
-  context.textAlign = "right";
+  context.beginPath()
+  context.moveTo(x + r, y)
+  context.arcTo(x + w, y, x + w, y + h, r)
+  context.arcTo(x + w, y + h, x, y + h, r)
+  context.arcTo(x, y + h, x, y, r)
+  context.arcTo(x, y, x + w, y, r)
+  context.closePath()
+  context.fillStyle = fillColor
+  context.fill()
+  context.fillStyle = textColor
+  context.textBaseline = 'bottom'
+  context.textAlign = 'right'
   context.fillText(
     text,
     canvasSize - Padding / 2,
     canvasSize,
     // This will prevent the text from going outside the favicon, instead it'll squeeze his with to fit in
     canvasSize - Padding
-  );
-};
+  )
+}
 
 function drawIcon({
   alertCount,
@@ -55,16 +55,16 @@ function drawIcon({
   url: src,
   canvasSize,
 }) {
-  const img = document.createElement("img");
-  img.crossOrigin = "Anonymous";
+  const img = document.createElement('img')
+  img.crossOrigin = 'Anonymous'
   img.onload = function () {
-    const canvas = document.createElement("canvas");
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    const canvas = document.createElement('canvas')
+    canvas.width = canvasSize
+    canvas.height = canvasSize
 
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, img.width, img.height);
-    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext('2d')
+    context.clearRect(0, 0, img.width, img.height)
+    context.drawImage(img, 0, 0, canvas.width, canvas.height)
 
     if (alertCount) {
       drawAlert(context, {
@@ -72,63 +72,62 @@ function drawIcon({
         textColor: alertTextColor,
         text: alertCount,
         canvasSize,
-      });
+      })
     }
 
     if (renderOverlay) {
-      renderOverlay(canvas, context);
+      renderOverlay(canvas, context)
     }
-    callback(context.canvas.toDataURL());
-  };
-  img.src = src;
+    callback(context.canvas.toDataURL())
+  }
+  img.src = src
 }
 
 class Favicon extends React.Component {
-  static displayName = "Favicon";
+  static displayName = 'Favicon'
 
-  static mountedInstances = [];
+  static mountedInstances = []
 
   static getActiveInstance() {
-    return Favicon.mountedInstances[Favicon.mountedInstances.length - 1];
+    return Favicon.mountedInstances[Favicon.mountedInstances.length - 1]
   }
 
   static draw() {
-    if (typeof document === "undefined") return;
+    if (typeof document === 'undefined') return
 
-    var activeInstance = Favicon.getActiveInstance();
+    var activeInstance = Favicon.getActiveInstance()
     if (linkElements.length === 0) {
-      var head = document.getElementsByTagName("head")[0];
+      var head = document.getElementsByTagName('head')[0]
 
-      const linkEl = document.createElement("link");
-      linkEl.type = "image/x-icon";
-      linkEl.rel = "icon";
+      const linkEl = document.createElement('link')
+      linkEl.type = 'image/x-icon'
+      linkEl.rel = 'icon'
 
-      const linkApple = document.createElement("link");
-      linkApple.rel = "apple-touch-icon";
+      const linkApple = document.createElement('link')
+      linkApple.rel = 'apple-touch-icon'
 
-      linkElements.push(linkEl, linkApple);
+      linkElements.push(linkEl, linkApple)
 
       // remove existing favicons
-      var links = head.getElementsByTagName("link");
+      var links = head.getElementsByTagName('link')
       for (var i = links.length; --i >= 0; ) {
         if (
-          /\bicon\b/i.test(links[i].getAttribute("rel")) &&
+          /\bicon\b/i.test(links[i].getAttribute('rel')) &&
           !activeInstance.props.keepIconLink(links[i])
         ) {
-          head.removeChild(links[i]);
+          head.removeChild(links[i])
         }
       }
 
-      linkElements.forEach((el) => head.appendChild(el));
+      linkElements.forEach((el) => head.appendChild(el))
     }
 
-    var currentUrl;
+    var currentUrl
 
     if (activeInstance.props.url instanceof Array) {
-      currentUrl =
-        activeInstance.props.url[activeInstance.state.animationIndex];
+      currentUrl = activeInstance.props.url[activeInstance.state.animationIndex]
     } else {
-      currentUrl = activeInstance.props.url;
+      currentUrl = activeInstance.props.url
     }
 
     if (activeInstance.props.alertCount || activeInstance.props.renderOverlay) {
@@ -137,63 +136,62 @@ class Favicon extends React.Component {
         alertFillColor: activeInstance.props.alertFillColor,
         alertTextColor: activeInstance.props.alertTextColor,
         callback: (url) => {
-          linkElements.forEach((el) => (el.href = url));
+          linkElements.forEach((el) => (el.href = url))
         },
         renderOverlay: activeInstance.props.renderOverlay,
         url: currentUrl,
         canvasSize: activeInstance.props.iconSize,
-      });
+      })
     } else {
-      linkElements.forEach((el) => (el.href = currentUrl));
+      linkElements.forEach((el) => (el.href = currentUrl))
     }
   }
 
   static update() {
-    if (typeof document === "undefined") return;
+    if (typeof document === 'undefined') return
 
-    var activeInstance = Favicon.getActiveInstance();
+    var activeInstance = Favicon.getActiveInstance()
     var isAnimated =
-      activeInstance.props.url instanceof Array &&
-      activeInstance.props.animated;
+      activeInstance.props.url instanceof Array && activeInstance.props.animated
 
     // clear any running animations
-    var intervalId = null;
-    clearInterval(activeInstance.state.animationLoop);
+    var intervalId = null
+    clearInterval(activeInstance.state.animationLoop)
 
     if (isAnimated) {
       var animateFavicon = function animateFavicon() {
         var nextAnimationIndex =
           (activeInstance.state.animationIndex + 1) %
-          activeInstance.props.url.length;
-        Favicon.draw();
-        activeInstance.setState({ animationIndex: nextAnimationIndex });
-      };
+          activeInstance.props.url.length
+        Favicon.draw()
+        activeInstance.setState({ animationIndex: nextAnimationIndex })
+      }
       intervalId = setInterval(
         animateFavicon,
         activeInstance.props.animationDelay
-      );
-      animateFavicon();
+      )
+      animateFavicon()
     } else {
-      Favicon.draw();
+      Favicon.draw()
     }
 
-    activeInstance.setState({ animationLoop: intervalId });
+    activeInstance.setState({ animationLoop: intervalId })
   }
 
   state = {
     animationIndex: 0,
     animationLoop: null,
     animationRunning: false,
-  };
+  }
 
   componentDidMount() {
-    Favicon.mountedInstances.push(this);
-    Favicon.update();
+    Favicon.mountedInstances.push(this)
+    Favicon.update()
   }
 
   componentWillUnmount() {
-    var activeInstance = Favicon.getActiveInstance();
-    clearInterval(activeInstance.state.animationLoop);
+    var activeInstance = Favicon.getActiveInstance()
+    clearInterval(activeInstance.state.animationLoop)
   }
 
   componentDidUpdate(prevProps) {
@@ -207,27 +205,27 @@ class Favicon extends React.Component {
       prevProps.keepIconLink === this.props.keepIconLink &&
       prevProps.iconSize === this.props.iconSize
     )
-      return;
+      return
 
-    Favicon.update();
+    Favicon.update()
   }
 
   render() {
-    return null;
+    return null
   }
 }
 
 Favicon.defaultProps = {
   iconSize: DefaultCanvasSize,
   alertCount: null,
-  alertFillColor: "red",
-  alertTextColor: "white",
+  alertFillColor: 'red',
+  alertTextColor: 'white',
   animated: true,
   animationDelay: 500,
   keepIconLink: () => false,
   renderOverlay: null,
   url: null,
-};
+}
 
 Favicon.propTypes = {
   iconSize: PropTypes.number,
@@ -242,6 +240,6 @@ Favicon.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.string,
   ]).isRequired,
-};
+}
 
-export default Favicon;
+export default Favicon
