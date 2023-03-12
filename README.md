@@ -2,9 +2,14 @@
 
 Control the favicon from a React app
 
+## Version 2.x
+
+The major version bump from 1.0.1 to 2.x versions does not include any API changes. The version bump was made because
+the build and release system was reworked from scratch, also the component was converted to use React's functional component API. Please report bugs if you encounter any.
+
 ## Demo
 
-http://oflisback.github.io/react-favicon
+https://oflisback.github.io/react-favicon
 
 This example is available in [example](./example).
 
