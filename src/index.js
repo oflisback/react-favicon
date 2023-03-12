@@ -124,10 +124,16 @@ class Favicon extends React.Component {
 
     var currentUrl
 
-    if (activeInstance.props.url instanceof Array) {
+    var isAnimated =
+      activeInstance.props.url instanceof Array && activeInstance.props.animated
+
+    if (isAnimated) {
       currentUrl = activeInstance.props.url[activeInstance.state.animationIndex]
     } else {
-      currentUrl = activeInstance.props.url
+      currentUrl =
+        activeInstance.props.url instanceof Array
+          ? activeInstance.props.url[0]
+          : activeInstance.props.url
     }
 
     if (activeInstance.props.alertCount || activeInstance.props.renderOverlay) {
