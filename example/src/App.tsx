@@ -146,12 +146,12 @@ const App = () => {
               onChange={(e) => setAlertCount(e.target.checked ? 1 : 0)}
               type='checkbox'
               style={{ height: '20px', width: '20px' }}
-              checked={(alertCount && alertCount > 0) as boolean}
+              checked={!!alertCount && alertCount > 0}
             />
             <div>Alert count</div>
             <input
               type='number'
-              value={alertCount}
+              value={alertCount ? alertCount : 0}
               onChange={(e) => setAlertCount(parseInt(e.target.value))}
             />
           </div>
