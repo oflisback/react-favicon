@@ -5,7 +5,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   minify: false,
-  entry: ['src/index.js'],
+  entry: ['src/index.jsx'],
   esbuildOptions: (options) => {
     options.footer = {
       // This will ensure we can continue writing this plugin

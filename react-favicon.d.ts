@@ -15,6 +15,6 @@ export interface FaviconProps {
   readonly iconSize?: number
 }
 
-declare const Favicon: React.Component<FaviconProps>
+declare const Favicon: React.SFC<FaviconProps>
 
 export default Favicon

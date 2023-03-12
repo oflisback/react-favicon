@@ -153,6 +153,7 @@ const App = () => {
               type='number'
               value={alertCount ? alertCount : 0}
               onChange={(e) => setAlertCount(parseInt(e.target.value))}
+              style={{ width: '35px', marginLeft: '10px' }}
             />
           </div>
           <div style={{ alignItems: 'center', display: 'flex' }}>
@@ -190,9 +191,12 @@ const App = () => {
                     margin: '2px',
                     width: '25px',
                     height: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  {size}
+                  <div style={{ height: '16px' }}>{size}</div>
                 </div>
               )
             )}
