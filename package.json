@@ -18,7 +18,7 @@
     "react-favicon.d.ts"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup --format esm,cjs",
     "format": "prettier -w lib/",
     "lint": "eslint lib/",
     "predeploy": "cd example && yarn install && yarn run build",
