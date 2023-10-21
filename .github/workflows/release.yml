@@ -20,18 +20,18 @@ jobs:
       - name: Setup build environment
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: '18.x'
 
       - name: Run actions-setup
         uses: pnpm/action-setup@v2
         with:
-          version: 6.0.2
+          version: 8
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
       - name: Build bundle
-        run: pnpm build --if-present
+        run: pnpm build
 
       - name: Release package
         run: npx semantic-release
