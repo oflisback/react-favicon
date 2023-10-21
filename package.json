@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsup --format esm,cjs",
     "format": "prettier -w src/",
-    "lint": "eslint src/",
+    "lint": "eslint src/*.jsx",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
