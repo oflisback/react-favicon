@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
-    "eslint": "^8.52.0",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
     "gh-pages": "^2.2.0",
     "prettier": "^2.8.8",
     "semantic-release": "^20.1.3",
