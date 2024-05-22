@@ -114,15 +114,15 @@ const updateHtmlIconLink = (keepIconLink) => {
 }
 
 const Favicon = ({
-  iconSize = DefaultCanvasSize,
-  alertCount = null,
-  alertFillColor = 'red',
-  alertTextColor = 'white',
-  animated = true,
-  animationDelay = 500,
-  keepIconLink = () => false,
-  renderOverlay = null,
-  url = null,
+  iconSize,
+  alertCount,
+  alertFillColor,
+  alertTextColor,
+  animated,
+  animationDelay,
+  keepIconLink,
+  renderOverlay,
+  url,
 }) => {
   const animationIndex = useRef(0)
   const animationTickIntervalId = useRef(null)
@@ -181,6 +181,18 @@ const Favicon = ({
   }
 
   return null
+}
+
+Favicon.defaultProps = {
+  iconSize: DefaultCanvasSize,
+  alertCount: null,
+  alertFillColor: 'red',
+  alertTextColor: 'white',
+  animated: true,
+  animationDelay: 500,
+  keepIconLink: () => false,
+  renderOverlay: null,
+  url: null,
 }
 
 Favicon.propTypes = {
