@@ -113,6 +113,8 @@ const updateHtmlIconLink = (keepIconLink) => {
   }
 }
 
+const defaultKeepIconLink = () => false
+
 const Favicon = ({
   iconSize = DefaultCanvasSize,
   alertCount = null,
@@ -120,7 +122,7 @@ const Favicon = ({
   alertTextColor = 'white',
   animated = true,
   animationDelay = 500,
-  keepIconLink = () => false,
+  keepIconLink = defaultKeepIconLink,
   renderOverlay = null,
   url = null,
 }) => {
